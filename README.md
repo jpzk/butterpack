@@ -4,7 +4,7 @@ butterpack is a C++ revamp of [Butterpack_File-2-Video](https://github.com/Backe
 
 # Example 
 
-Here is an example of how the output might look like. In this image the **butterencode.cpp** source code is embedded into the image. 
+Here is an example of how the output might look like. In this image the **butterencode.cpp** source code is embedded into the image.The image width is 640, height is 480 and cell size is 5.
 
 ![butterpack.cpp](http://i.imgur.com/Ui5xYnB.jpg)
 
