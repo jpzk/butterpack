@@ -1,10 +1,10 @@
 # butterpack
 
-butterpack is a C++ revamp of [Butterpack_File-2-Video](https://github.com/BackendButters/Butterpack_File-2-Video). It is a **proof of concept**. butterpack is an encoder and decoder, which allow you to store any file in an image and read the file from the image.The simple bit encoding is bold, but easy to understand and robust.
+butterpack is a C++ revamp of [Butterpack_File-2-Video](https://github.com/BackendButters/Butterpack_File-2-Video) based on [OpenCV 2.0](https://github.com/Itseez/opencv). It is a **proof of concept**. butterpack is an encoder and decoder, which allow you to store any file in an image and read the file from the image.The simple bit encoding is bold, but easy to understand and robust.
 
 # Example 
 
-Here is an example of how the output might look like. In this image the butterencode.cpp source code is embedded into the image. 
+Here is an example of how the output might look like. In this image the **butterencode.cpp** source code is embedded into the image. 
 
 ![butterpack.cpp](http://i.imgur.com/Ui5xYnB.jpg)
 
