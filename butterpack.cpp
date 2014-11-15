@@ -53,8 +53,8 @@ Mat encode(int w, int h, int cells, char *buffer) {
                 for(int cj = 0; cj < cells; cj++) {
                     int x = i * cells + ci;
                     int y = j * cells + cj;
-                    char blue = bits[bits_offset] * 255;
-                    A.at<Vec3b>(x,y) = Vec3b(blue,blue,0);
+                    int color = bits[bits_offset] * 255;
+                    A.at<Vec3b>(x,y) = Vec3b(color,color,color);
                 }
             }
             // next data point
@@ -124,10 +124,8 @@ char* decode(Mat input, int w, int h, int cells) {
                     int x = i * cells + ci;
                     int y = j * cells + cj;
                     Vec3b point = input.at<Vec3b>(x,y);
-                    int r = point.val[0];
-                    int g = point.val[1];
-                    int b = point.val[2];
-                    redundant_data[rd_index] = r;
+                    int color = point.val[0];
+                    redundant_data[rd_index] = color;
                     rd_index++;
                 }
             }
@@ -171,7 +169,7 @@ float test_encoding(const char* filename, int w, int h, int cells) {
 }
 
 int main() {
-    test_encoding("data", 1920, 1280, 5);
+    test_encoding("butterpack.cpp", 640, 480, 5);
 
     return(0);
 }
