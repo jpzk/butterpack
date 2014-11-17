@@ -3,18 +3,19 @@
 #include <cmath>
 
 #include "opencv2/opencv.hpp"
+#include "include/butterpack_codec.hpp"
 
 using namespace std;
 using namespace cv;
 
 // return the file size
-ifstream::pos_type filesize(const char* filename) {
+ifstream::pos_type ButterpackCodec::filesize(const char* filename) {
     ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
     return in.tellg(); 
 }
 
 // read the data into a buffer
-char* read_data(const char* filename) {
+char* ButterpackCodec::read_data(const char* filename) {
     char *buffer;
 
     ifstream file;
@@ -31,7 +32,7 @@ char* read_data(const char* filename) {
 }
 
 // encode 
-Mat encode(int w, int h, int cells, char *buffer) {
+Mat ButterpackCodec::encode(int w, int h, int cells, char *buffer) {
     Mat A( h, w, CV_8UC3, Scalar(0,0,0));
 
     int bytes = (w / cells) * (h / cells);
@@ -65,7 +66,7 @@ Mat encode(int w, int h, int cells, char *buffer) {
 }
 
 // use quorum to guess the value among many
-int quorum(int data[], size_t n) {
+int ButterpackCodec::quorum(int data[], size_t n) {
     int diversity = 1;
     int old = data[0];
     int *unique = new int[n];
@@ -108,7 +109,7 @@ int quorum(int data[], size_t n) {
 }
 
 // decoder function 
-char* decode(Mat input, int w, int h, int cells) {
+char* ButterpackCodec::decode(Mat input, int w, int h, int cells) {
     int bits_offset = 0;
     int bits = (w / cells) * (h / cells);
     int *buffer = new int[bits];
@@ -153,23 +154,4 @@ char* decode(Mat input, int w, int h, int cells) {
     return(output);
 }
 
-float test_encoding(const char* filename, int w, int h, int cells) {
-    char *input, *reconstructed;
-    input = read_data(filename);
-    Mat A = encode(w, h, cells, input);
-    imwrite("output.jpg", A);
 
-    Mat img = imread("output.jpg");
-    reconstructed = decode(img, w, h, cells);
-
-    cout << reconstructed << endl;
-
-    delete[] reconstructed;
-    delete[] input;
-}
-
-int main() {
-    test_encoding("butterpack.cpp", 640, 480, 5);
-
-    return(0);
-}
