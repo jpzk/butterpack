@@ -38,7 +38,6 @@ void Butterpack::encode(int w, int h, int cells, char *in, char *out) {
 
     delete[] input_data;
     delete codec;
-    // todo this should return the encoded data as byte[]
 };
 
 void Butterpack::decode(int w, int h, int cells, char *in, char *out) {
@@ -52,6 +51,5 @@ void Butterpack::decode(int w, int h, int cells, char *in, char *out) {
 
     delete[] data;
     delete codec;
-    // todo: this should return the decoded data as byte[]
 };
 
