@@ -17,7 +17,6 @@ along with butterpack.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <fstream>
 #include <iostream>
-#include <cmath>
 
 #include "opencv2/opencv.hpp"
 #include "include/butterpack_codec.hpp"
@@ -42,12 +41,16 @@ void Butterpack::encode(int w, int h, int cells, char *in, char *out) {
 
 void Butterpack::decode(int w, int h, int cells, char *in, char *out) {
     ButterpackCodec *codec;
+    fstream fs;
+
     codec = new ButterpackCodec();
 
     char *data;    
     Mat image = imread(in);
     data = codec->decode(image, w, h, cells);
-    cout << data << endl;
+    fs.open(out, fstream::out | fstream::binary); 
+    fs << data;
+    fs.close();
 
     delete[] data;
     delete codec;

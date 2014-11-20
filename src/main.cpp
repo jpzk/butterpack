@@ -15,14 +15,27 @@ You should have received a copy of the GNU General Public License
 along with butterpack.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
+
 #include "include/butterpack_codec.hpp"
 #include "include/butterpack.hpp"
 
 int main(int argc, char **argv) {
 
-    Butterpack *butterpack;
-    butterpack = new Butterpack();
-    butterpack->encode(640, 480, 5, "src/butterpack.cpp","out.jpg");
+    if(argc < 4 && argv[1] != "-d" && argv[1] != "-e") {
+        cout << "butterpack -d/-e input output" << endl;
+        return(-1);
+    }
+
+    Butterpack *butterpack = new Butterpack();
+ 
+    if(strcmp(argv[1],"-e") == 0) {
+        cout << "encode" << endl;
+        butterpack->encode(640, 480, 5, argv[2], argv[3]);
+    } else {
+        butterpack->decode(640, 480, 5, argv[2], argv[3]);
+    }
+
     delete butterpack;
     return(0);
 };
