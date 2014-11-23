@@ -25,13 +25,21 @@ along with butterpack.  If not, see <http://www.gnu.org/licenses/>.
 using namespace std;
 using namespace cv;
 
-// return the file size
+/**
+ * Returns the file size of a file
+ *
+ * @param filename char* pointer to filename
+ */
 ifstream::pos_type ButterpackCodec::filesize(const char* filename) {
     ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
     return in.tellg(); 
 }
 
-// read the data into a buffer
+/**
+ * Read data from filename
+ *
+ * @param filename char* pointer to filename
+ */
 char* ButterpackCodec::read_data(const char* filename) {
     char *buffer;
 
@@ -48,8 +56,50 @@ char* ButterpackCodec::read_data(const char* filename) {
     }
 }
 
-// encode 
-Mat ButterpackCodec::encode(int w, int h, int cells, char *buffer) {
+/** 
+ * Encodes buffer into a vector of opencv images
+ * 
+ * @param w int width of the image
+ * @param h int height of the image
+ * @param cells int cell size, width and height
+ * @param buffer char* pointer to the input buffer
+ */
+vector<Mat> ButterpackCodec::encode(int w, int h, int cells, char *buffer) {
+    
+    vector<Mat> output;
+    
+    float space = ((float) w / (float) cells) * ((float) h / (float) cells);
+    float bytes = (float) sizeof(buffer) / (float) sizeof(char);
+
+    int images = ceil(bytes / space);
+    cout << images << endl;
+
+    return output;
+}
+
+/**
+ * Decodes a vector of Mat images into a buffer 
+ *
+ * @param inputs vector<Mat> vector of input images
+ * @param w int width of the input images
+ * @param h int height of the input images
+ * @param cells int cell size of the input images
+ */
+char* ButterpackCodec::decode(vector<Mat> inputs, int w, int h, int cells) {
+
+    char *buffer;
+    return buffer;
+} 
+
+/**
+ * Encodes buffer into a single opencv image
+ * 
+ * @param w int width of the image
+ * @param h int height of the image
+ * @param cells int cell size, width and height
+ * @param buffer char* pointer to the input buffer
+ */
+ Mat ButterpackCodec::encode_single(int w, int h, int cells, char *buffer) {
     Mat A( h, w, CV_8UC3, Scalar(0,0,0));
 
     int bytes = (w / cells) * (h / cells);
@@ -82,7 +132,13 @@ Mat ButterpackCodec::encode(int w, int h, int cells, char *buffer) {
     return(A); 
 }
 
-// use quorum to guess the value among many
+/**
+ * Returns the int value of the most common value
+ * in the data array
+ *
+ * @data int array with values
+ * @n size_t of the array
+ */
 int ButterpackCodec::quorum(int data[], size_t n) {
     int diversity = 1;
     int old = data[0];
@@ -125,8 +181,15 @@ int ButterpackCodec::quorum(int data[], size_t n) {
     return(result);
 }
 
-// decoder function 
-char* ButterpackCodec::decode(Mat input, int w, int h, int cells) {
+/**
+ * Decode a single openCV image to buffer
+ *
+ * @param input Mat image 
+ * @param w int width of the image
+ * @param h int height of the image
+ * @param cells int cell size, width and height
+ */
+char* ButterpackCodec::decode_single(Mat input, int w, int h, int cells) {
     int bits_offset = 0;
     int bits = (w / cells) * (h / cells);
     int *buffer = new int[bits];

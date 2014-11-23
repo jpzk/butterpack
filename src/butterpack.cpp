@@ -25,6 +25,15 @@ along with butterpack.  If not, see <http://www.gnu.org/licenses/>.
 using namespace std;
 using namespace cv;
 
+/**
+ * Encodes a buffer into multiple image files
+ *
+ * @param w int width of the images
+ * @param h int height of the images
+ * @param cells int cell size of the images
+ * @param in char* input filename 
+ * @param out char* output filename 
+ */
 void Butterpack::encode(int w, int h, int cells, char *in, char *out) {
     ButterpackCodec *codec;
     char *input_data;
@@ -32,13 +41,22 @@ void Butterpack::encode(int w, int h, int cells, char *in, char *out) {
     codec = new ButterpackCodec();
     input_data = codec->read_data(in);
 
-    Mat image = codec->encode(w, h, cells, input_data);
+    Mat image = codec->encode_single(w, h, cells, input_data);
     imwrite(out, image);
 
     delete[] input_data;
     delete codec;
 };
 
+/**
+ * Decodes a buffer from multiple images to a file
+ *
+ * @param w int width of the images
+ * @param cells int cell size of the images
+ * @param h int height of the images
+ * @param in char* input filename 
+ * @param out char* output filename 
+ */
 void Butterpack::decode(int w, int h, int cells, char *in, char *out) {
     ButterpackCodec *codec;
     fstream fs;
@@ -47,7 +65,7 @@ void Butterpack::decode(int w, int h, int cells, char *in, char *out) {
 
     char *data;    
     Mat image = imread(in);
-    data = codec->decode(image, w, h, cells);
+    data = codec->decode_single(image, w, h, cells);
     fs.open(out, fstream::out | fstream::binary); 
     fs << data;
     fs.close();
