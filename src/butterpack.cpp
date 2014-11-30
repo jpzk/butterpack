@@ -35,15 +35,29 @@ using namespace cv;
  * @param out char* output filename 
  */
 void Butterpack::encode(int w, int h, int cells, char *in, char *out) {
-    ButterpackCodec *codec;
-    char *input_data;
+ 
+    ButterpackCodec *codec = new ButterpackCodec();
+    char *input_data = codec->read_data(in);
+    char filename[30];
 
-    codec = new ButterpackCodec();
-    input_data = codec->read_data(in);
+    int input_size = codec->filesize(in);
+    int images = codec->images(w, h, cells, input_size);
+    int bytes_per_image = codec->bytes(w, h, cells);
 
-    Mat image = codec->encode_single(w, h, cells, input_data);
-    imwrite(out, image);
+    char buffer[bytes_per_image]; // buffer for one image
 
+    // foreach image convert and write image
+    for(int i = 0; i < images; i++) {
+        sprintf(filename, "%s%d.jpg", out, i);
+        int offset = i * bytes_per_image; 
+        for(int b = 0; b < bytes_per_image; b++) {
+            buffer[b] = input_data[offset + b];
+        }
+        Mat im = codec->encode_single(w, h, cells, buffer);
+        imwrite(filename, im);
+    }
+
+    delete[] buffer;
     delete[] input_data;
     delete codec;
 };
@@ -63,7 +77,7 @@ void Butterpack::decode(int w, int h, int cells, char *in, char *out) {
 
     codec = new ButterpackCodec();
 
-    char *data;    
+    char *data;
     Mat image = imread(in);
     data = codec->decode_single(image, w, h, cells);
     fs.open(out, fstream::out | fstream::binary); 

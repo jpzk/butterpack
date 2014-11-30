@@ -31,6 +31,8 @@ using namespace cv;
 
 class ButterpackCodec {
     public:
+        int images(int w, int h, int cells, int bytes);
+        int bytes(int w, int h, int cells);
         vector<Mat> encode(int w, int h, int cells, char *buffer);
         char* decode(vector<Mat> input, int w, int h, int cells);
         Mat encode_single(int w, int h, int cells, char *buffer);

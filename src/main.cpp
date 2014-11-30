@@ -28,12 +28,12 @@ int main(int argc, char **argv) {
     }
 
     Butterpack *butterpack = new Butterpack();
- 
+
     if(strcmp(argv[1],"-e") == 0) {
         cout << "encode" << endl;
-        butterpack->encode(640, 480, 5, argv[2], argv[3]);
+        butterpack->encode(800, 600, 5, argv[2], argv[3]);
     } else {
-        butterpack->decode(640, 480, 5, argv[2], argv[3]);
+        butterpack->decode(1920, 1280, 5, argv[2], argv[3]);
     }
 
     delete butterpack;

@@ -36,6 +36,36 @@ ifstream::pos_type ButterpackCodec::filesize(const char* filename) {
 }
 
 /**
+ * Returns the number of images needed to store
+ * the data.
+ *
+ * @param int w
+ * @param int h
+ * @param int cells cell size
+ * @param int bytes to store
+ */
+int ButterpackCodec::images(int w, int h, int cells, int bytes) {
+    int bits_per_image = (w / cells) * (h / cells);
+    int needed = (bytes * 8);
+    int images = ceil((float) needed / (float) bits_per_image);
+
+    return(images);
+};
+
+/**
+ * Return the space in bytes in one images 
+ *
+ * @param int w
+ * @param int h 
+ * @param int cells cell size
+ * @param int bytes to store
+ */
+int ButterpackCodec::bytes(int w, int h, int cells) {
+    int bits_per_image = (w / cells) * (h / cells);
+    return(bits_per_image / 8);
+}
+
+/**
  * Read data from filename
  *
  * @param filename char* pointer to filename
